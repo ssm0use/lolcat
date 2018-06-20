@@ -1,18 +1,47 @@
 //stores lolcat message
 var messageText;
+
 //stores Party Time label message
 var buttonMessage;
+
+//initial values for time events
 var noon = 12;
 var evening = 18; // 6PM
-var wakeupTime = 9; // 9AM
+var wakeUpTime = 9; // 9AM
 var lunchTime = 12; // 12PM
 var partyTime = 17; // 5PM
-var napTime = lunchTime + 2; // 2PM
+var napTime = lunchTime + 3; // 3PM
 var isPartyTime = false;
+
+//party time button
 var partyTimeButton = document.getElementById("partyTimeButton");
+
+//dynamic time
+var time = new Date().getHours();
+
+//drop down time selectors
+var wakeUpTimeSelector =  document.getElementById("wakeUpTimeSelector");
+var lunchTimeSelector =  document.getElementById("lunchTimeSelector");
+var napTimeSelector =  document.getElementById("napTimeSelector");
 
 // One second in Javascript
 var oneSecond = 1000; 
+
+//functions to change event times based on drop down selected
+var wakeUpEvent = function()
+{
+    wakeUpTime = wakeUpTimeSelector.value;
+};
+
+var lunchTimeEvent = function()
+{
+    lunchTime = lunchTimeSelector.value;
+};
+
+var napTimeEvent = function()
+{
+    napTime = napTimeSelector.value;
+};
 
 var partyEvent = function() {
    
@@ -20,7 +49,7 @@ var partyEvent = function() {
       isPartyTime = true;
       time = partyTime;
       // text in the button should read "Party Over"
-      buttonMessage = "Party Over"
+      buttonMessage = "Party Over";
       // color of the button should be "#0A8DAB" (bonus!)
       partyTimeButton.style.backgroundColor = "#0A8DAB";
    }
@@ -28,7 +57,7 @@ var partyEvent = function() {
       isPartyTime = false;
       time = new Date().getHours();
       // text in the button should read "PARTY TIME!"
-      buttonMessage = "PARTY TIME!"
+      buttonMessage = "PARTY TIME!";
       // color of the button should be "#222" (bonus!)
       partyTimeButton.style.backgroundColor = "#222";
    }
@@ -78,10 +107,6 @@ var showCurrentTime = function()
 
 var updateClock = function() 
 {
-  //dynamic time
-  var time = new Date().getHours();
-  //for a time for test
-  //var time = 17;
   // connect HTML to JS. HTML message ID = clock
   var messageJS = document.getElementById("timeEvent");
   // HTML image ID is lolcatImage
@@ -98,7 +123,7 @@ var updateClock = function()
   } else if (time == lunchTime) {
     messageText = "IZ NOM NOM NOM TIME!!";
     image = "https://s3.amazonaws.com/media.skillcrush.com/skillcrush/wp-content/uploads/2016/09/cat2.jpg";
-  } else if (time == wakeupTime) {
+  } else if (time == wakeUpTime) {
     messageText = "IZ TIME TO GETTUP.";
     image = "https://s3.amazonaws.com/media.skillcrush.com/skillcrush/wp-content/uploads/2016/09/cat1.jpg";
   } else if (time < noon) {
@@ -120,5 +145,11 @@ var updateClock = function()
   showCurrentTime();
 };
 
+//time update interval
 setInterval(updateClock, oneSecond);
+
+//listeners
 partyTimeButton.addEventListener("click", partyEvent);
+wakeUpTimeSelector.addEventListener('change', wakeUpEvent);
+lunchTimeSelector.addEventListener('change', lunchTimeEvent);
+napTimeSelector.addEventListener('change', napTimeEvent);
